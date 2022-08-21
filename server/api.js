@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const Booking = require("./bookingschema");
+const Booking = require("./Model/bookingschema");
 
 
 
@@ -13,11 +13,21 @@ router.post("/book", async (req, res) => {
         }
     )
 
-    const bookingres = await booking.save();
-    res.json(bookingres);
+    try{
+        
+        const bookingres = await booking.save();
+        res.json(bookingres);
+    }catch (err) {
+        console.log(err);
+        res.status(400).json(err);
+    }
 });
 
-router.get()
+router.get("/bookings", async (req, res) => {
+    bookings = await Booking.find();
+    res.json(bookings);
+
+});
 
 
 

@@ -7,10 +7,18 @@ const api = require("./api");
 
 dotenv.config();
 
-mongoose.connect(process.env.DB_CONNECT, { useUnifiedTopology: true, useNewUrlParser: true }, () => {
-    console.log('connected to db');
+
+mongoose.connect(
+    process.env.DB_CONNECT,{
+        useUnifiedTopology: true, useNewUrlParser: true 
+    }
+)
+.then(() => console.log('DB Connection Successfull'))
+.catch((err) => {
+    console.error(err);
 });
 
+app.use(express.json());
 app.use("/api", api);
 
 app.listen(5000, () => {console.log("server running on 5000")});  

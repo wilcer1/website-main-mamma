@@ -7,12 +7,11 @@ import {
   Card,
   Button,
   CircularProgress,
-  Popover,
   ThemeProvider,
   createMuiTheme,
 } from "@material-ui/core";
 import { ArrowLeft, ArrowRight } from "@material-ui/icons";
-
+import Box from "@material-ui/core/Box"
 const CalendarTemplate = ({
   availability,
   setAvailability,
@@ -73,17 +72,17 @@ const CalendarTemplate = ({
   const useMonths = (year) => ({
     1: {
       lastDay: 31,
-      month: "Januari",
+      month: "January",
       firstDay: moment(`01/01/${year}`),
     },
     2: {
       lastDay: year % 4 === 0 ? 29 : 28,
-      month: "Februari",
+      month: "February",
       firstDay: moment(`02/01/${year}`),
     },
     3: {
       lastDay: 31,
-      month: "Mars",
+      month: "March",
       firstDay: moment(`03/01/${year}`),
     },
     4: {
@@ -93,22 +92,22 @@ const CalendarTemplate = ({
     },
     5: {
       lastDay: 31,
-      month: "Maj",
+      month: "May",
       firstDay: moment(`05/01/${year}`),
     },
     6: {
       lastDay: 30,
-      month: "Juni",
+      month: "June",
       firstDay: moment(`06/01/${year}`),
     },
     7: {
       lastDay: 31,
-      month: "Juli",
+      month: "July",
       firstDay: moment(`07/01/${year}`),
     },
     8: {
       lastDay: 31,
-      month: "Augusti",
+      month: "August",
       firstDay: moment(`08/01/${year}`),
     },
     9: {
@@ -118,7 +117,7 @@ const CalendarTemplate = ({
     },
     10: {
       lastDay: 31,
-      month: "Oktober",
+      month: "October",
       firstDay: moment(`10/01/${year}`),
     },
     11: {
@@ -132,6 +131,7 @@ const CalendarTemplate = ({
       firstDay: moment(`12/01/${year}`),
     },
   });
+
 
   const getDefaultTimes = () => {
     const times = [
@@ -238,7 +238,7 @@ const CalendarTemplate = ({
     ];
     let include = false;
     return times.filter(time => {
-      if (time.time === startTime) { // add check if booked in db
+      if (time.time === startTime) {
         include = true;
       }
       if (time.time === endTime) {
@@ -252,7 +252,7 @@ const CalendarTemplate = ({
   function TimeButton({ className, start, end, available, handleClick }) {
     return (
       <Button
-        onClick={handleClick}
+        onClick={console.log("time")}
         color={available ? "primary" : "default"}
         className={className}
         variant={available ? "contained" : "outlined"}
@@ -261,7 +261,6 @@ const CalendarTemplate = ({
       </Button>
     );
   }
-
   function getDaysArray() {
     return [
       ["", "", "", "", "", "", ""],
@@ -273,124 +272,22 @@ const CalendarTemplate = ({
     ];
   }
 
-  const convertAvailabilityFromDatabase = (availability) => {
-    const output = {};
-    for (let range of availability) {
-      let start = moment(range.start);
-      let startTime = `${start.format("H")}:${start.format("mm")}`;
-      let end = moment(range.end);
-      let endTime = `${end.format("H")}:${end.format("mm")}`;
-      let year = Number(start.format("YYYY"));
-      let month = start.format("MMMM");
-      let day = Number(start.format("D"));
-      fillOutputWithDefaultTimes(output, year, month, day);
-      let i = 0;
-      while (
-        i < output[year][month][day].length &&
-        output[year][month][day][i].time !== startTime
-      )
-        i++;
-      while (
-        i < output[year][month][day].length &&
-        output[year][month][day][i].time !== endTime
-      ) {
-        output[year][month][day][i].available = true;
-        i++;
-      }
-    }
-    return output;
-  };
 
-  const convertAvailabilityForDatabase = (availability) => {
-    const output = [];
-    for (let year in availability) {
-      for (let month in availability[year]) {
-        for (let day in availability[year][month]) {
-          let activeDay = availability[year][month][day];
-          addActiveDayToOutput(activeDay, output, month, day, year);
-          
-        }
-      }
-    }
-    return output;
-  };
 
-  const combineTimeArrays = (a, b) => {
-    for (let i = 0; i < a.length; i++) {
-      a[i].available = a[i].available || b[i].available;
-    }
-    return a;
-  };
-  function addActiveDayToOutput(activeDay, output, month, day, year) {
-    let activeRangeStart = null;
-    for (let time of activeDay) {
-      if (time.available && !activeRangeStart) activeRangeStart = time.time;
-      else if (!time.available && activeRangeStart) {
-        output.push({
-          start: new Date(`${month} ${day} ${year} ${activeRangeStart}`),
-          end: new Date(`${month} ${day} ${year} ${time.time}`),
-        });
-        activeRangeStart = null;
-      }
-    }
-  }
+ 
 
-  function fillOutputWithDefaultTimes(output, year, month, day) {
-    if (output.hasOwnProperty(year)) {
-      if (output[year].hasOwnProperty(month)) {
-        if (!output[year][month].hasOwnProperty(day)) {
-          output[year][month][day] = getDefaultTimes();
-        }
-      } else {
-        output[year][month] = {
-          [day]: getDefaultTimes(),
-        };
-      }
-    } else {
-      output[year] = {
-        [month]: {
-          [day]: getDefaultTimes(),
-        },
-      };
-    }
-  }
-
-  function makeQuickAvailability(availability) {
-    const output = {};
-    for (let range of availability) {
-      if (new Date(range.start) > new Date()) {
-        let day = moment(range.start).format("MMMM D, YYYY");
-        let time = `${moment(range.start).format("H:mm")} - ${moment(
-          range.end
-        ).format("H:mm")}`;
-        if (output[day]) {
-          output[day].push(time);
-        } else {
-          output[day] = [time];
-        }
-      }
-    }
-    return output;
-  }
   return function Calendar() {
     const classes = useStyles();
     const today = moment();
-    const [availabilityState, setAvailabilityState] = useState(
-      convertAvailabilityFromDatabase(availability)
-    );
-    const [quickAvailability, setQuickAvailability] = useState(
-      makeQuickAvailability(availability)
-    );
-    const [activeDay, setActiveDay] = useState(null);
     const [year, setYear] = useState(Number(today.format("YYYY")));
     const [monthNumber, setMonthNumber] = useState(Number(today.format("M")));
-    const [settingMultiple, setSettingMultiple] = useState(false);
     const months = useMonths(year);
+    const [activeDay, setActiveDay] = useState(null);
     const { firstDay, month, lastDay } = months[monthNumber];
     let dayOfWeek = Number(moment(firstDay).format("d"));
-    const days = getDaysArray();
-    const [times, setTimes] = useState(getDefaultTimes());
+    const days = getDaysArray();;
     const [saving, setSaving] = useState(false);
+    const [times, setTimes] = useState(getDefaultTimes);
     let week = 0;
     let dayOfMonth = 1;
     while (week < 6 && dayOfMonth <= lastDay) {
@@ -403,64 +300,22 @@ const CalendarTemplate = ({
       }
     }
     const createArrowHandler = (delta) => () => {
-      let newMonth = monthNumber + delta;
-      if (newMonth > 12) {
-        setYear(year + 1);
-        newMonth = 1;
-      } else if (newMonth < 1) {
-        setYear(year - 1);
-        newMonth = 12;
-      }
-      setActiveDay(null);
-      setTimes(getDefaultTimes());
-      setMonthNumber(newMonth);
-    };
-    const createTimeHandler = (i) => () => {
-      const newTimes = [...times];
-      newTimes[i].available = !newTimes[i].available;
-      if (activeDay) {
-        addTimeToDay(newTimes);
-      }
-      setTimes(newTimes);
-    };
-    const createDayHandler = (day) => () => {
-      if (settingMultiple) {
-        addTimesToDay(day);
-      } else {
-        examineAvailabilityForDay(day);
-      }
-    };
-    const handleSetMultiple = () => {
-      setActiveDay(null);
-      setSettingMultiple(!settingMultiple);
-    };
-    const handleSaveAvailability = () => {
-      const data = convertAvailabilityForDatabase(availabilityState);
-      setSaving(true);
-      setAvailability(data);
-    };
-    const handleJumpToCurrent = () => {
-      setYear(Number(today.format("YYYY")));
-      setMonthNumber(Number(today.format("M")));
-      setActiveDay(null);
-      setTimes(getDefaultTimes());
-    };
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [popoverContent, setPopoverContent] = useState(null);
-    const handleOpenPopover = (date) => {
-      return (e) => {
-        if (quickAvailability[date]) {
-          setPopoverContent(
-            quickAvailability[date].map((time) => <p>{time}</p>)
-          );
-          setAnchorEl(e.target);
+        let newMonth = monthNumber + delta;
+        if (newMonth > 12) {
+          setYear(year + 1);
+          newMonth = 1;
+        } else if (newMonth < 1) {
+          setYear(year - 1);
+          newMonth = 12;
         }
+        setMonthNumber(newMonth);
+    }
+
+    const handleJumpToCurrent = () => {
+        setYear(Number(today.format("YYYY")));
+        setMonthNumber(Number(today.format("M")));
       };
-    };
-    const handleClosePopover = () => {
-      setAnchorEl(null);
-      setPopoverContent(null);
-    };
+
     return (
       <ThemeProvider theme={theme}>
         <Grid
@@ -494,19 +349,20 @@ const CalendarTemplate = ({
                           {week.map((day, i) => (
                             <Grid key={year + month + i} item>
                               <IconButton
-                                onClick={createDayHandler(day)}
+                                
+                                onClick={() => {setActiveDay(day);
+                                }}
                                 color={
-                                  activeDay === day
+                                    activeDay === day
                                     ? "primary"
-                                    : availabilityState[year] &&
-                                      availabilityState[year][month] &&
-                                      availabilityState[year][month][day] &&
-                                      availabilityState[year][month][
-                                        day
-                                      ].filter((x) => x.available).length > 0
-                                    ? "secondary"
-                                    : "default"
+                                    :  !day ||
+                                    (year === Number(today.format("YYYY")) &&
+                                      month === today.format("MMMM") &&
+                                      day < Number(today.format("D")))
+                                      ? "secondary"
+                                      : "default"
                                 }
+
                                 disabled={
                                   !day ||
                                   (year === Number(today.format("YYYY")) &&
@@ -514,10 +370,7 @@ const CalendarTemplate = ({
                                     day < Number(today.format("D")))
                                 }
                                 size="medium"
-                                onMouseEnter={handleOpenPopover(
-                                  `${month} ${day}, ${year}`
-                                )}
-                                onMouseLeave={handleClosePopover}
+                               
                               >
                                 <p className={classes.calendarText}>{day}</p>
                               </IconButton>
@@ -526,18 +379,6 @@ const CalendarTemplate = ({
                         </Grid>
                       </Grid>
                     ))}
-                    <Popover
-                      anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "center",
-                      }}
-                      className={classes.popover}
-                      classes={{ paper: classes.paper }}
-                      anchorEl={anchorEl}
-                      open={!!anchorEl}
-                    >
-                      {popoverContent}
-                    </Popover>
                     <Button
                       disabled={
                         year === Number(today.format("YYYY")) &&
@@ -556,8 +397,21 @@ const CalendarTemplate = ({
                   <ArrowRight />
                 </IconButton>
               </Grid>
+              
               <Grid item>
+                
                 <Grid container justify="center" alignItems="center" wrap="wrap">
+                  <Grid item>
+                    <Grid
+                      container
+                      direction="column"
+                      alignItems="center"
+                      wrap="wrap"
+                      
+                    >
+                    </Grid>
+
+                  </Grid>
                   <Grid item>
                     <Grid
                       container
@@ -573,54 +427,21 @@ const CalendarTemplate = ({
                               className={classes.button}
                               start={time.time}
                               end={times[i + 1].time}
-                              handleClick={createTimeHandler(i)}
+                              handleClick={console.log("hi")}
                               available={time.available}
                             />
                           )
-                      )}
-                    </Grid>
-                  </Grid>
-                  <Grid item>
-                    <Grid
-                      container
-                      direction="column"
-                      alignItems="center"
-                      wrap="wrap"
-                    >
-                      {times.map(
-                        (time, i) =>
-                          i < times.length - 1 &&
-                          i > 5 && (
-                            <TimeButton
-                              key={time.time}
-                              className={classes.button}
-                              start={time.time}
-                              end={times[i + 1].time}
-                              handleClick={createTimeHandler(i)}
-                              available={time.available}
-                            />
-                          )
-                      )}
+                      )} 
+                       
                     </Grid>
                   </Grid>
                 </Grid>
               </Grid>
+              
             </Grid>
           </Grid>
           <Grid item>
             <Grid container direction="row" alignItems="center" justify="center">
-              <Grid item>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  onClick={handleSetMultiple}
-                  className={classes.button}
-                >
-                  {settingMultiple
-                    ? "Done"
-                    : "Välj valda tider vid flera dagar"}
-                </Button>
-              </Grid>
               <Grid item>
                 {saving ? (
                   <CircularProgress />
@@ -628,7 +449,7 @@ const CalendarTemplate = ({
                   <Button
                     color="primary"
                     variant="contained"
-                    onClick={handleSaveAvailability}
+                    onClick={console.log("hi")}
                     className={classes.button}
                   >
                     Spara
@@ -641,71 +462,11 @@ const CalendarTemplate = ({
       </ThemeProvider>
     );
 
-    function addTimeToDay(newTimes) {
-      const newAvail = availabilityState;
-      if (newAvail.hasOwnProperty(year)) {
-        if (newAvail[year].hasOwnProperty(month)) {
-          newAvail[year][month][activeDay] = newTimes;
-        } else {
-          newAvail[year][month] = {
-            [activeDay]: newTimes,
-          };
-        }
-      } else {
-        newAvail[year] = {
-          [month]: {
-            [activeDay]: newTimes,
-          },
-        };
-      }
-      setAvailabilityState(newAvail);
-      setQuickAvailability(
-        makeQuickAvailability(convertAvailabilityForDatabase(newAvail))
-      );
-    }
+   
 
-    function examineAvailabilityForDay(day) {
-      if (
-        availabilityState[year] &&
-        availabilityState[year][month] &&
-        availabilityState[year][month][day]
-      ) {
-        setTimes(availabilityState[year][month][day]);
-      } else {
-        setTimes(getDefaultTimes());
-      }
-      setActiveDay(day);
-    }
+    
 
-    function addTimesToDay(day) {
-      const newAvail = { ...availabilityState };
-      if (newAvail[year]) {
-        if (newAvail[year][month]) {
-          if (newAvail[year][month][day]) {
-            newAvail[year][month][day] = combineTimeArrays(
-              newAvail[year][month][day],
-              times
-            );
-          } else {
-            newAvail[year][month][day] = times;
-          }
-        } else {
-          newAvail[year][month] = {
-            [day]: times,
-          };
-        }
-      } else {
-        newAvail[year] = {
-          [month]: {
-            [day]: times,
-          },
-        };
-      }
-      setAvailabilityState(newAvail);
-      setQuickAvailability(
-        makeQuickAvailability(convertAvailabilityForDatabase(newAvail))
-      );
-    }
+   
   };
 };
 
