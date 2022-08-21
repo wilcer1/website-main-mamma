@@ -3,8 +3,14 @@ const app = express();
 const mongoose = require("mongoose");
 const dotenv = require('dotenv');
 
-app.get("/api", (req, res) => {
-    res.json( {"hello": ["hi1", "hi2"]} );
+const api = require("./api");
+
+dotenv.config();
+
+mongoose.connect(process.env.DB_CONNECT, { useUnifiedTopology: true, useNewUrlParser: true }, () => {
+    console.log('connected to db');
 });
 
-app.listen(5000, () => {console.log("server running on 5000")});
+app.use("/api", api);
+
+app.listen(5000, () => {console.log("server running on 5000")});  
