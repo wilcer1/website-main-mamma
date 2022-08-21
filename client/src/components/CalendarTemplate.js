@@ -238,7 +238,7 @@ const CalendarTemplate = ({
     ];
     let include = false;
     return times.filter(time => {
-      if (time.time === startTime) {
+      if (time.time === startTime) { // add check if booked in db
         include = true;
       }
       if (time.time === endTime) {
