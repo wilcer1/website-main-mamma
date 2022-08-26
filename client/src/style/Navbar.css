@@ -1,5 +1,5 @@
 .menu h1{
-    color: lightcyan;
+    color: rgb(0, 0, 0);
     text-align: center;
 }
 * {
@@ -23,7 +23,7 @@
  }
  nav {
     position: absolute;
-    background:rgba(240, 231, 231, 0.904);;
+    background:rgb(255, 255, 255);;
     top:30px;
     left:0;
     width: 100%;
@@ -47,6 +47,22 @@
  }
  nav ul li a:hover, nav ul li a:focus {
     color: #eb6f4a;
+ }
+
+ .endpoints {
+   text-decoration:none;
+   margin:10px;
+  
+   display:inline-block;
+   color:#fff;
+   padding:2px 5px;
+   text-align:center;
+   white-space:nowrap;
+
+ }
+
+ .socialmedia {
+   float: right;
  }
 .fa.fa-bars.menu-icon{
     color: white;

@@ -2,6 +2,7 @@ import React from "react"
 import { useState } from "react"
 import { useEffect } from "react"
 import Calendar from './Calendar';
+import "../style/Booking.css"
 
 function Booking(){
     const [date, setDate] = useState(null);
@@ -14,8 +15,8 @@ function Booking(){
 
     return(
         
-      <div>
-        <Calendar />
+      <div className="Calendar">
+        <Calendar/>
       </div>
     )
 }

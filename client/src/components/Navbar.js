@@ -2,6 +2,7 @@ import React from "react"
 import { useState } from "react"
 import { useEffect } from "react"
 import "../style/Navbar.css"
+import instagram from "../assets/Instagram-Icon.png"
 
 function Navbar(){
 
@@ -21,9 +22,9 @@ function Navbar(){
                     <nav>
                         <ul>
                             <li><a href="/"><h1>Företag namn här</h1></a></li>
-                            <li><a href="/Boka">Boka Tid</a></li>
-                            <li><a href="/Om">Om</a></li>
-                            
+                            <li className="endpoints"><a href="/Boka">Boka Tid</a></li>
+                            <li className="endpoints"><a href="/Om">Om</a></li>
+                            <li className="socialmedia"> <a href="https://www.instagram.com/holistisklakning/"><img src={instagram} alt="instagram" width={30} height={30}></img></a></li>
                         </ul>
                     </nav>
                 <label for="checkbox">

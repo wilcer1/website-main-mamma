@@ -169,7 +169,7 @@ const CalendarTemplate = ({
       },
       {
         time: "8:00",
-        available: false,
+        available: true,
       },
       {
         time: "9:00",
@@ -316,6 +316,12 @@ const CalendarTemplate = ({
         setMonthNumber(Number(today.format("M")));
       };
 
+
+  const dayChange = (day) => {
+    setTimes(getDefaultTimes)
+    setActiveDay(day)
+  }
+
     return (
       <ThemeProvider theme={theme}>
         <Grid
@@ -350,7 +356,7 @@ const CalendarTemplate = ({
                             <Grid key={year + month + i} item>
                               <IconButton
                                 
-                                onClick={() => {setActiveDay(day);
+                                onClick={() => {dayChange(day);
                                 }}
                                 color={
                                     activeDay === day
@@ -429,6 +435,7 @@ const CalendarTemplate = ({
                               end={times[i + 1].time}
                               handleClick={console.log("hi")}
                               available={time.available}
+                              
                             />
                           )
                       )} 
