@@ -425,9 +425,10 @@ const CalendarTemplate = ({
                       alignItems="center"
                       wrap="wrap"
                     >
+                      
                       {times.map(
                         (time, i) =>
-                          i < times.length - 7 && (
+                          i < times.length - 7 && activeDay != null && (
                             <TimeButton
                               key={time.time}
                               className={classes.button}
