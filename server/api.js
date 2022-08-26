@@ -25,6 +25,13 @@ router.post("/book", async (req, res) => {
     }
 });
 
+
+router.get("/getAvailable", async (req, res)=> {
+    available = await Available.find();
+    res.json(available);
+
+});
+
 router.post("/setAvailable", async (req, res) => {
     const available = new Available(
     { 

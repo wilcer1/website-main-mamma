@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import moment from "moment";
 import {
   IconButton,
@@ -131,123 +131,26 @@ const CalendarTemplate = ({
       firstDay: moment(`12/01/${year}`),
     },
   });
+  function getAndFormatTimes() {
+    const times = []
+    fetch("/api/getAvailable")
+    .then(res => res.json())
+    .then(response => {
+      response.map((element) => {
+        var available = element.datetime.split("_");
+        times.push({
+          date: available[0],
+          time: available[1]
+        })
+
+      })
+      
+    });
+    return times;
+  }
 
 
-  const getDefaultTimes = () => {
-    const times = [
-      {
-        time: "0:00",
-        available: false,
-      },
-      {
-        time: "1:00",
-        available: false,
-      },
-      {
-        time: "2:00",
-        available: false,
-      },
-      {
-        time: "3:00",
-        available: false,
-      },
-      {
-        time: "4:00",
-        available: false,
-      },
-      {
-        time: "5:00",
-        available: false,
-      },
-      {
-        time: "6:00",
-        available: false,
-      },
-      {
-        time: "7:00",
-        available: false,
-      },
-      {
-        time: "8:00",
-        available: true,
-      },
-      {
-        time: "9:00",
-        available: false,
-      },
-      {
-        time: "10:00",
-        available: false,
-      },
-      {
-        time: "11:00",
-        available: false,
-      },
-      {
-        time: "12:00",
-        available: false,
-      },
-      {
-        time: "13:00",
-        available: false,
-      },
-      {
-        time: "14:00",
-        available: false,
-      },
-      {
-        time: "15:00",
-        available: false,
-      },
-      {
-        time: "16:00",
-        available: false,
-      },
-      {
-        time: "17:00",
-        available: false,
-      },
-      {
-        time: "18:00",
-        available: false,
-      },
-      {
-        time: "19:00",
-        available: false,
-      },
-      {
-        time: "20:00",
-        available: false,
-      },
-      {
-        time: "21:00",
-        available: false,
-      },
-      {
-        time: "22:00",
-        available: false,
-      },
-      {
-        time: "23:00",
-        available: false,
-      },
-      {
-        time: "0:00",
-        available: false,
-      },
-    ];
-    let include = false;
-    return times.filter(time => {
-      if (time.time === startTime) {
-        include = true;
-      }
-      if (time.time === endTime) {
-        include = false;
-        return true;
-      }
-      return include;
-    })
-  };
+  
 
   function TimeButton({ className, start, end, available, handleClick }) {
     return (
@@ -287,7 +190,7 @@ const CalendarTemplate = ({
     let dayOfWeek = Number(moment(firstDay).format("d"));
     const days = getDaysArray();;
     const [saving, setSaving] = useState(false);
-    const [times, setTimes] = useState(getDefaultTimes);
+    const [times, setTimes] = useState(getAndFormatTimes);
     let week = 0;
     let dayOfMonth = 1;
     while (week < 6 && dayOfMonth <= lastDay) {
@@ -310,7 +213,18 @@ const CalendarTemplate = ({
         }
         setMonthNumber(newMonth);
     }
+    const getTimes = () => {
+      if(activeDay != null){
+        fetch("/api/getAvailable")
+        .then(res => res.json())
+        .then(response => {
+          console.log(response);
+          setTimes(response)
 
+        });
+  
+      }
+    };
     const handleJumpToCurrent = () => {
         setYear(Number(today.format("YYYY")));
         setMonthNumber(Number(today.format("M")));
@@ -318,8 +232,10 @@ const CalendarTemplate = ({
 
 
   const dayChange = (day) => {
-    setTimes(getDefaultTimes)
-    setActiveDay(day)
+   
+      setActiveDay(day)
+    
+    
   }
 
     return (
@@ -427,8 +343,36 @@ const CalendarTemplate = ({
                     >
                       
                       {times.map(
+                        (time, i) => {
+                        
+                          
+                              <TimeButton
+                              key={time.time}
+                              className={classes.button}
+                              start={"hi"}
+                              end={"times[i + 1].time"}
+                              handleClick={console.log("hi")}
+                              available={true}
+                              
+                            />
+                          
+
+                        }
+                      )} 
+                       
+                    </Grid>
+                  </Grid>
+                  <Grid item>
+                    <Grid
+                      container
+                      direction="column"
+                      alignItems="center"
+                      wrap="wrap"
+                    >
+                      {/* {times.map(
                         (time, i) =>
-                          i < times.length - 7 && activeDay != null && (
+                          i < times.length - 1 && activeDay != null &&
+                          i > 5 && (
                             <TimeButton
                               key={time.time}
                               className={classes.button}
@@ -436,17 +380,14 @@ const CalendarTemplate = ({
                               end={times[i + 1].time}
                               handleClick={console.log("hi")}
                               available={time.available}
-                              
                             />
                           )
-                      )} 
-                       
+                      )} */}
                     </Grid>
-                  </Grid>
                 </Grid>
               </Grid>
-              
             </Grid>
+          </Grid>
           </Grid>
           <Grid item>
             <Grid container direction="row" alignItems="center" justify="center">
