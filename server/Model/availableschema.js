@@ -1,22 +1,14 @@
 const mongoose = require("mongoose");
 
-const bookingsAvailableSchema = new mongoose.Schema({
-    name: {
+const availableSchema = new mongoose.Schema({
+    datetime: {
         type: String,
+        min: 22,
+        max: 22,
         required: true,
-        min: 6,
-        max: 255 
-    },
-    email: {
-        type: String,
-        required: true,
-        max: 255,
-        min: 6
-    },
-    date: {
-        type: Date,
-        required: true
-    }
+        unique: true
+        }
+    
 });
 
-module.exports = mongoose.model('bookingsAvailable', bookingsAvailableSchema);  
+module.exports = mongoose.model('availableSchema', availableSchema);  
