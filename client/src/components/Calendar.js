@@ -1,18 +1,26 @@
 import React, { useState } from 'react';
-import CalendarTemplate from './CalendarTemplate';
+import Calendar from "react-calendar"
+import "../style/Calendar.css"
 
-function Calendar(){
-    const [availability, setAvailability] = useState([]);
-    const Calendar = CalendarTemplate({
-      availability,
-      setAvailability,
-    });
+
+
+const ReactCalendar = () => {
+  const [date, setDate] = useState(new Date());
+  const [times, setTimes] = useState([]);
+  
+
+  const onChange = date => {
+    console.log("hiyaaaa");
+    setDate(date)
+  }
+   
     return (
-      <div>
-        <Calendar />
+      <div className='container'>
+        <Calendar onChange={onChange} value={date} minDate={new Date()}/>
+        {console.log(date)}
       </div>
     );
 
 }
 
-export default Calendar;
+export default ReactCalendar;
