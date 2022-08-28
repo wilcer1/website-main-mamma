@@ -5,6 +5,10 @@
     display: flex;
     justify-content: center;
 }
+.times{
+    position:absolute;
+    overflow: auto;
+}
 
 .react-calendar {
     width: auto;
