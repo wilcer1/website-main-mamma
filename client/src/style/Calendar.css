@@ -5,9 +5,15 @@
     display: flex;
     justify-content: center;
 }
+.calendarandtime td{
+   padding-bottom: 3px;
+}
 .times{
-    position:absolute;
-    overflow: auto;
+    text-align: center;
+    
+}
+.timestr{
+    display: inline-block;
 }
 
 .react-calendar {
