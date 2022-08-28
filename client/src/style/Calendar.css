@@ -5,15 +5,16 @@
     display: flex;
     justify-content: center;
 }
-.calendarandtime td{
-   padding-bottom: 3px;
+.calendarandtime tr{
+   padding-bottom: 10px;
+   
 }
-.times{
-    text-align: center;
-    
-}
+
+
 .timestr{
     display: inline-block;
+    text-align: center;
+   
 }
 
 .react-calendar {
