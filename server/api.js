@@ -2,7 +2,18 @@ const router = require("express").Router();
 const Booking = require("./Model/bookingschema");
 const Available = require("./Model/availableschema");
 
+function formatDateTime(json){
+    datetimeformatted = []
+    available.map((element) => {
+        var temp = element.datetime.split("_");
+        datetimeformatted.push({
+          date: temp[0],
+          time: temp[1]
+        });
 
+      });
+      return datetimeformatted
+}
 
 router.post("/book", async (req, res) => {
 
@@ -28,8 +39,17 @@ router.post("/book", async (req, res) => {
 
 router.get("/getAvailable", async (req, res)=> {
     available = await Available.find();
-    res.json(available);
 
+    res.json(formatDateTime(available));
+
+});
+
+router.get("/availableForDate", async (req, res)=> {
+    available = await Available.find({"datetime": new RegExp(req.query.date)})
+    console.log(available);
+    console.log(req.query.date);
+    res.json(formatDateTime(available))
+ 
 });
 
 router.post("/setAvailable", async (req, res) => {
