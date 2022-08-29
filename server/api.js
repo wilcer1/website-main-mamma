@@ -76,6 +76,11 @@ router.get("/bookings", async (req, res) => {
 });
 
 
+router.post("/fillday", async (req, res) => {
+    
+})
+
+
 
 
 
