@@ -387,12 +387,7 @@ const CalendarTemplate = ({
   return function Calendar() {
     const classes = useStyles();
     const today = moment();
-    const [availabilityState, setAvailabilityState] = useState(
-      convertAvailabilityFromDatabase(availability)
-    );
-    const [quickAvailability, setQuickAvailability] = useState(
-      makeQuickAvailability(availability)
-    );
+    
     const [activeDay, setActiveDay] = useState(formatDate(today._d));
     const [year, setYear] = useState(Number(today.format("YYYY")));
     const [monthNumber, setMonthNumber] = useState(Number(today.format("M")));
@@ -413,7 +408,6 @@ const CalendarTemplate = ({
         dayOfWeek = 0;
       }
     }
-    console.log(availability);
     useEffect(() => {
       
       fetch(`/api/availableForDate?date=${activeDay}`)
@@ -442,46 +436,37 @@ const CalendarTemplate = ({
       setTimes([]);
       setMonthNumber(newMonth);
     };
-    const createTimeHandler = (i) => () => {
-      const newTimes = [...times];
-      newTimes[i].available = !newTimes[i].available;
-      if (activeDay) {
-        addTimeToDay(newTimes);
-      }
-      setTimes(newTimes);   
-    };
-    const createDayHandler = (day) => () => {
-      
-        examineAvailabilityForDay(day);
-      
-    };
+    
+    
    
-    const handleSaveAvailability = () => {
-      const data = convertAvailabilityForDatabase(availabilityState);
-      setSaving(true);
-      setAvailability(data);
-    };  
+   
     const handleJumpToCurrent = () => {
       setYear(Number(today.format("YYYY")));
       setMonthNumber(Number(today.format("M")));
       setActiveDay(null);
-      setTimes(getDefaultTimes());
+      setTimes([]);
     };
     const [anchorEl, setAnchorEl] = useState(null);
     const [popoverContent, setPopoverContent] = useState(null);
-    const handleOpenPopover = (date) => {
-      return (e) => {
-        if (quickAvailability[date]) {
-          setPopoverContent(
-            quickAvailability[date].map((time) => <p>{time}</p>)
-          );
-          setAnchorEl(e.target);
-        }
-      };
-    };
+    
     const handleClosePopover = () => {
       setAnchorEl(null);
       setPopoverContent(null);
+    };
+
+    const monthsLong = {
+      January: '01',
+      February: '02',
+      March: '03',
+      April: '04',
+      May: '05',
+      June: '06',
+      July: '07',
+      August: '08',
+      September: '09',
+      October: '10',
+      November: '11',
+      December: '12',
     };
     return (
       <ThemeProvider theme={theme}>
@@ -516,18 +501,12 @@ const CalendarTemplate = ({
                           {week.map((day, i) => (
                             <Grid key={year + month + i} item>
                               <IconButton
-                                onClick={createDayHandler(day)}
+                                onClick={() => {setActiveDay(day + "/" + monthsLong[month] + "/" + year)}}
                                 color={
-                                  activeDay === day
+                                  activeDay === day + "/" + monthsLong[month] + "/" + year
                                     ? "primary"
-                                    : availabilityState[year] &&
-                                      availabilityState[year][month] &&
-                                      availabilityState[year][month][day] &&
-                                      availabilityState[year][month][
-                                        day
-                                      ].filter((x) => x.available).length > 0
-                                    ? "secondary"
-                                    : "default"
+                                    : "secondary"
+                                
                                 }
                                 disabled={
                                   !day ||
@@ -536,9 +515,7 @@ const CalendarTemplate = ({
                                     day < Number(today.format("D")))
                                 }
                                 size="medium"
-                                onMouseEnter={handleOpenPopover(
-                                  `${month} ${day}, ${year}`
-                                )}
+                              
                                 onMouseLeave={handleClosePopover}
                               >
                                 <p className={classes.calendarText}>{day}</p>
@@ -594,7 +571,7 @@ const CalendarTemplate = ({
                               key={time.time.concat(time.date)}
                               className={classes.button}
                               time={time}
-                              handleClick={createTimeHandler(i)}
+                              handleClick={console.log("btn")}
                               available={time.available}
                             />
                           )
@@ -617,7 +594,7 @@ const CalendarTemplate = ({
                               key={time.time.concat(time.date)}
                               className={classes.button}
                               time={time}
-                              handleClick={createTimeHandler(i)}
+                              handleClick={console.log("wqeqewqwe")}
                               available={time.available}
                             />
                             
@@ -639,7 +616,7 @@ const CalendarTemplate = ({
                   <Button
                     color="primary"
                     variant="contained"
-                    onClick={handleSaveAvailability}
+                    onClick={console.log("buttn")}
                     className={classes.button}
                   >
                     Boka
@@ -652,72 +629,11 @@ const CalendarTemplate = ({
       </ThemeProvider>
     );
 
-    function addTimeToDay(newTimes) {
-      const newAvail = availabilityState;
-      console.log(newAvail);
-      if (newAvail.hasOwnProperty(year)) {
-        if (newAvail[year].hasOwnProperty(month)) {
-          newAvail[year][month][activeDay] = newTimes;
-        } else {
-          newAvail[year][month] = {
-            [activeDay]: newTimes,
-          };
-        }
-      } else {
-        newAvail[year] = {
-          [month]: {
-            [activeDay]: newTimes,
-          },
-        };
-      }
-      setAvailabilityState(newAvail);
-      setQuickAvailability(
-        makeQuickAvailability(convertAvailabilityForDatabase(newAvail))
-      );
-    }
+    
 
-    function examineAvailabilityForDay(day) {
-      if (
-        availabilityState[year] &&
-        availabilityState[year][month] &&
-        availabilityState[year][month][day]
-      ) {
-        setTimes(availabilityState[year][month][day]);
-      } else {
-        setTimes(getDefaultTimes());
-      }
-      setActiveDay(day);
-    }
+    
 
-    function addTimesToDay(day) {
-      const newAvail = { ...availabilityState };
-      if (newAvail[year]) {
-        if (newAvail[year][month]) {
-          if (newAvail[year][month][day]) {
-            newAvail[year][month][day] = combineTimeArrays(
-              newAvail[year][month][day],
-              times
-            );
-          } else {
-            newAvail[year][month][day] = times;
-          }
-        } else {
-          newAvail[year][month] = {
-            [day]: times,
-          };
-        }
-      } else {
-        newAvail[year] = {
-          [month]: {
-            [day]: times,
-          },
-        };
-      }
-      setAvailabilityState(newAvail);
-      setQuickAvailability(
-        makeQuickAvailability(convertAvailabilityForDatabase(newAvail))
-      );
-    }
+    
   };
 };
 

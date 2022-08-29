@@ -45,9 +45,9 @@ router.get("/getAvailable", async (req, res)=> {
 });
 
 router.get("/availableForDate", async (req, res)=> {
-    available = await Available.find({"datetime": new RegExp(req.query.date)})
+    console.log(req.query.date + "ewqeqwewqeqw3eqw");
+    available = await Available.find({"datetime": RegExp(req.query.date)})
     console.log(available);
-    console.log(req.query.date);
     res.json(formatDateTime(available))
  
 });
