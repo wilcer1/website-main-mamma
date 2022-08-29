@@ -413,9 +413,10 @@ const CalendarTemplate = ({
         dayOfWeek = 0;
       }
     }
+    console.log(availability);
     useEffect(() => {
       
-      fetch(`/api/availableForDate?date=${"28/08/2022"}`)
+      fetch(`/api/availableForDate?date=${activeDay}`)
         .then(res => res.json())
         .then(response => {
           response.map((element) => {
@@ -438,7 +439,7 @@ const CalendarTemplate = ({
         newMonth = 12;
       }
       setActiveDay(null);
-      setTimes(getDefaultTimes());
+      setTimes([]);
       setMonthNumber(newMonth);
     };
     const createTimeHandler = (i) => () => {
@@ -590,7 +591,7 @@ const CalendarTemplate = ({
                         (time, i) =>
                           i < Math.ceil(times.length / 2) && (
                             <TimeButton
-                              key={time.time}
+                              key={time.time.concat(time.date)}
                               className={classes.button}
                               time={time}
                               handleClick={createTimeHandler(i)}
@@ -613,7 +614,7 @@ const CalendarTemplate = ({
                           i >  Math.ceil(times.length / 2) - 1 && (   
                             
                             <TimeButton
-                              key={time.time}
+                              key={time.time.concat(time.date)}
                               className={classes.button}
                               time={time}
                               handleClick={createTimeHandler(i)}
