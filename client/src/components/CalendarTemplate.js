@@ -421,7 +421,7 @@ const CalendarTemplate = ({
                       onClick={handleJumpToCurrent}
                       className={classes.buttonNoMargin}
                     >
-                      Jump to Current Month
+                      Hoppa till nuvarande månad
                     </Button>
                   </Grid>
                 </Card>
