@@ -456,11 +456,21 @@ const CalendarTemplate = ({
     };
 
     function saveBooking(datetime) {
-      fetch("/api/book")
-    }
+     
+      fetch("/api/book", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({datetime: datetime})
+    })
+    .then(res => res.text())
+    .then(response => {
+      console.log(response);
+    })
+}
     
-    
-   
    
     const handleJumpToCurrent = () => {
       setYear(Number(today.format("YYYY")));
@@ -638,7 +648,7 @@ const CalendarTemplate = ({
                   <Button
                     color="primary"
                     variant="contained"
-                    onClick={console.log("buttn")}
+                    onClick={() => {console.log('2');}}
                     className={classes.button}
                   >
                     Boka

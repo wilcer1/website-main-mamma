@@ -16,11 +16,11 @@ function formatDateTime(json){
 
 router.post("/book", async (req, res) => {
 
-    const booking = await Booking.findOneAndUpdate({"datetime": RegExp(req.query.date), booked: false}, {booked: true})
+    const booking = await Booking.findOneAndUpdate({"datetime": RegExp(req.body.datetime), booked: false}, {booked: true})
 
     try{
         
-        res.json(bookingres);
+        res.json(booking);
     }catch (err) {
         console.log(err);
         res.status(400).json(err);
