@@ -314,6 +314,24 @@ const CalendarTemplate = ({
     return output;
   };
 
+  function fillDayAvailable(date){
+    for(let i = 10; i < 20; i++){
+      fetch("/api/setAvailable", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({datetime: date + `_${i}:00-${i+1}:00`})
+    })
+    .then(res => res.text())
+    .then(response => {
+      console.log(response);
+    })
+}
+    }
+  
+
   const convertAvailabilityForDatabase = (availability) => {
     const output = [];
     for (let year in availability) {
@@ -436,6 +454,10 @@ const CalendarTemplate = ({
       setTimes([]);
       setMonthNumber(newMonth);
     };
+
+    function saveBooking(datetime) {
+      fetch("/api/book")
+    }
     
     
    

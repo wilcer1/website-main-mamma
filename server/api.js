@@ -1,10 +1,9 @@
 const router = require("express").Router();
 const Booking = require("./Model/bookingschema");
-const Available = require("./Model/availableschema");
 
 function formatDateTime(json){
     datetimeformatted = []
-    available.map((element) => {
+    json.map((element) => {
         var temp = element.datetime.split("_");
         datetimeformatted.push({
           date: temp[0],
@@ -17,18 +16,10 @@ function formatDateTime(json){
 
 router.post("/book", async (req, res) => {
 
-    const booking = new Booking(
-        {
-            name: req.body.name,
-            email: req.body.email,
-            datetime: req.body.datetime
-            
-        }
-    )
+    const booking = await Booking.findOneAndUpdate({"datetime": RegExp(req.query.date), booked: false}, {booked: true})
 
     try{
         
-        const bookingres = await booking.save();
         res.json(bookingres);
     }catch (err) {
         console.log(err);
@@ -38,7 +29,7 @@ router.post("/book", async (req, res) => {
 
 
 router.get("/getAvailable", async (req, res)=> {
-    available = await Available.find();
+    available = await Booking.find({booked: false});
 
     res.json(formatDateTime(available));
 
@@ -46,14 +37,15 @@ router.get("/getAvailable", async (req, res)=> {
 
 router.get("/availableForDate", async (req, res)=> {
     console.log(req.query.date + "ewqeqwewqeqw3eqw");
-    available = await Available.find({"datetime": RegExp(req.query.date)})
+    available = await Booking.find({"datetime": RegExp(req.query.date), booked: false})
     console.log(available);
     res.json(formatDateTime(available))
  
 });
 
 router.post("/setAvailable", async (req, res) => {
-    const available = new Available(
+    console.log(req.body.datetime);
+    const available = new Booking(
     { 
         datetime: req.body.datetime
         
@@ -70,7 +62,7 @@ router.post("/setAvailable", async (req, res) => {
 })
 
 router.get("/bookings", async (req, res) => {
-    bookings = await Booking.find();
+    bookings = await Booking.find({booked: true});
     res.json(bookings);
 
 });
