@@ -146,121 +146,7 @@ const CalendarTemplate = ({
     ].join('/');
   }
 
-  const getDefaultTimes = () => {
-    const times = [
-      {
-        time: "0:00",
-        available: false,
-      },
-      {
-        time: "1:00",
-        available: false,
-      },
-      {
-        time: "2:00",
-        available: false,
-      },
-      {
-        time: "3:00",
-        available: false,
-      },
-      {
-        time: "4:00",
-        available: false,
-      },
-      {
-        time: "5:00",
-        available: false,
-      },
-      {
-        time: "6:00",
-        available: false,
-      },
-      {
-        time: "7:00",
-        available: false,
-      },
-      {
-        time: "8:00",
-        available: false,
-      },
-      {
-        time: "9:00",
-        available: false,
-      },
-      {
-        time: "10:00",
-        available: false,
-      },
-      {
-        time: "11:00",
-        available: false,
-      },
-      {
-        time: "12:00",
-        available: false,
-      },
-      {
-        time: "13:00",
-        available: false,
-      },
-      {
-        time: "14:00",
-        available: false,
-      },
-      {
-        time: "15:00",
-        available: false,
-      },
-      {
-        time: "16:00",
-        available: false,
-      },
-      {
-        time: "17:00",
-        available: false,
-      },
-      {
-        time: "18:00",
-        available: false,
-      },
-      {
-        time: "19:00",
-        available: false,
-      },
-      {
-        time: "20:00",
-        available: false,
-      },
-      {
-        time: "21:00",
-        available: false,
-      },
-      {
-        time: "22:00",
-        available: false,
-      },
-      {
-        time: "23:00",
-        available: false,
-      },
-      {
-        time: "0:00",
-        available: false,
-      },
-    ];
-    let include = false;
-    return times.filter(time => {
-      if (time.time === startTime) {
-        include = true;
-      }
-      if (time.time === endTime) {
-        include = false;
-        return true;
-      }
-      return include;
-    })
-  };
+ 
 
   function TimeButton({ className, time, available, handleClick }) {
     return (
@@ -286,33 +172,7 @@ const CalendarTemplate = ({
     ];
   }
 
-  const convertAvailabilityFromDatabase = (availability) => {
-    const output = {};
-    for (let range of availability) {
-      let start = moment(range.start);
-      let startTime = `${start.format("H")}:${start.format("mm")}`;
-      let end = moment(range.end);
-      let endTime = `${end.format("H")}:${end.format("mm")}`;
-      let year = Number(start.format("YYYY"));
-      let month = start.format("MMMM");
-      let day = Number(start.format("D"));
-      fillOutputWithDefaultTimes(output, year, month, day);
-      let i = 0;
-      while (
-        i < output[year][month][day].length &&
-        output[year][month][day][i].time !== startTime
-      )
-        i++;
-      while (
-        i < output[year][month][day].length &&
-        output[year][month][day][i].time !== endTime
-      ) {
-        output[year][month][day][i].available = true;
-        i++;
-      }
-    }
-    return output;
-  };
+ 
 
   function fillDayAvailable(date){
     for(let i = 10; i < 20; i++){
@@ -365,25 +225,7 @@ const CalendarTemplate = ({
     }
   }
 
-  function fillOutputWithDefaultTimes(output, year, month, day) {
-    if (output.hasOwnProperty(year)) {
-      if (output[year].hasOwnProperty(month)) {
-        if (!output[year][month].hasOwnProperty(day)) {
-          output[year][month][day] = getDefaultTimes();
-        }
-      } else {
-        output[year][month] = {
-          [day]: getDefaultTimes(),
-        };
-      }
-    } else {
-      output[year] = {
-        [month]: {
-          [day]: getDefaultTimes(),
-        },
-      };
-    }
-  }
+ 
 
   function makeQuickAvailability(availability) {
     const output = {};
@@ -415,6 +257,7 @@ const CalendarTemplate = ({
     const days = getDaysArray();
     const [times, setTimes] = useState([]);
     const [saving, setSaving] = useState(false);
+    const [timeSelected, setTimeSelected] = useState(null);
     let week = 0;
     let dayOfMonth = 1;
     while (week < 6 && dayOfMonth <= lastDay) {
@@ -426,6 +269,7 @@ const CalendarTemplate = ({
         dayOfWeek = 0;
       }
     }
+    console.log(times);
     useEffect(() => {
       
       fetch(`/api/availableForDate?date=${activeDay}`)
@@ -603,7 +447,7 @@ const CalendarTemplate = ({
                               key={time.time.concat(time.date)}
                               className={classes.button}
                               time={time}
-                              handleClick={console.log("btn")}
+                              handleClick={()=> {time.available = !time.available; setTimeSelected(time.time); }}
                               available={time.available}
                             />
                           )
@@ -626,7 +470,7 @@ const CalendarTemplate = ({
                               key={time.time.concat(time.date)}
                               className={classes.button}
                               time={time}
-                              handleClick={console.log("wqeqewqwe")}
+                              handleClick={()=> {time.available = !time.available; setTimeSelected(time.time); }}
                               available={time.available}
                             />
                             
@@ -648,7 +492,7 @@ const CalendarTemplate = ({
                   <Button
                     color="primary"
                     variant="contained"
-                    onClick={() => {console.log('2');}}
+                    onClick={() => {saveBooking(`${activeDay}_${timeSelected}`);}}
                     className={classes.button}
                   >
                     Boka
