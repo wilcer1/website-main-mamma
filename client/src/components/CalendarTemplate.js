@@ -374,10 +374,6 @@ const CalendarTemplate = ({
         times[i].available = true
         setTimeSelected(times[i].time);
       }
-
-     
-      
-    
     }
 
     const monthsLong = {
