@@ -321,6 +321,7 @@ const CalendarTemplate = ({
       }
       setActiveDay(null);
       setTimes([]);
+      setTimeSelected(null)
       setMonthNumber(newMonth);
     };
 
@@ -423,7 +424,11 @@ const CalendarTemplate = ({
                           {week.map((day, i) => (
                             <Grid key={year + month + i} item>
                               <IconButton
-                                onClick={() => {setActiveDay(day + "/" + monthsLong[month] + "/" + year)}}
+                                onClick={() => {
+                                  setActiveDay(day + "/" + monthsLong[month] + "/" + year);
+                                  setTimeSelected(null)
+
+                              }}
                                 color={
                                   activeDay === day + "/" + monthsLong[month] + "/" + year
                                     ? "primary"

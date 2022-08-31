@@ -19,6 +19,8 @@ import { AiFillPlusCircle, AiFillDelete } from "react-icons/ai";
 
 
 
+
+
 const AdminCalendarTemplate = ({
   primaryColor = "#DF1B1B",
   secondaryColor = "#47b2a2",
@@ -221,6 +223,42 @@ const AdminCalendarTemplate = ({
     const [timeSelected, setTimeSelected] = useState(null);
     const [openPop, setOpenPop] = useState(false);
     const closeModal = () => setOpenPop(false);
+    const optionsdleft = [
+      "05:00",
+      "06:00",
+      "07:00",
+      "08:00",
+      "10:00",
+      "11:00",
+      "12:00",
+      "13:00",
+      "14:00",
+      "15:00",
+      "16:00",
+      "17:00",
+      "18:00",
+      "19:00",
+      "20:00",
+    ];
+    const optionsdright = [
+      "06:00",
+      "07:00",
+      "08:00",
+      "10:00",
+      "11:00",
+      "12:00",
+      "13:00",
+      "14:00",
+      "15:00",
+      "16:00",
+      "17:00",
+      "18:00",
+      "19:00",
+      "20:00",
+      "21:00"
+    ];
+    const defaultOptionLeft = optionsdleft[0];
+    const defaultOptionRight = optionsdright[0];
     let week = 0;
     let dayOfMonth = 1;
     while (week < 6 && dayOfMonth <= lastDay) {
@@ -232,7 +270,7 @@ const AdminCalendarTemplate = ({
         dayOfWeek = 0;
       }
     }
-    console.log(today);
+    
     useEffect(() => {
 
       fetch(`/api/availableForDate?date=${activeDay}`)
@@ -257,6 +295,7 @@ const AdminCalendarTemplate = ({
       }
       setActiveDay(null);
       setTimes([]);
+      setTimeSelected(null)
       setMonthNumber(newMonth);
     };
 
@@ -360,7 +399,11 @@ const AdminCalendarTemplate = ({
                           {week.map((day, i) => (
                             <Grid key={year + month + i} item>
                               <IconButton
-                                onClick={() => { setActiveDay(day + "/" + monthsLong[month] + "/" + year) }}
+                                onClick={() => {
+                                   setActiveDay(day + "/" + monthsLong[month] + "/" + year) 
+                                   setTimeSelected(null) 
+                                  
+                                  }}
                                 color={
                                   activeDay === day + "/" + monthsLong[month] + "/" + year
                                     ? "primary"
@@ -483,6 +526,7 @@ const AdminCalendarTemplate = ({
                     // saveBooking(`${activeDay}_${timeSelected}`);
 
                   }}
+                  disabled={timeSelected === null}
                   className={classes.button}
                 >
                   Ta bort tid
@@ -519,6 +563,8 @@ const AdminCalendarTemplate = ({
                       <div className="header"> Modal Title </div>
                       <div className="content">
                       Dag vald: {activeDay}
+                    
+              
                       </div>
                       <div className="actions">
                         <button>Lägg till tid</button>
