@@ -294,7 +294,7 @@ const CalendarTemplate = ({
         dayOfWeek = 0;
       }
     }
-    console.log(times);
+    
     useEffect(() => {
       
       fetch(`/api/availableForDate?date=${activeDay}`)
@@ -356,6 +356,29 @@ const CalendarTemplate = ({
       setAnchorEl(null);
       setPopoverContent(null);
     };
+
+    function timeButtonClicked(i){
+      if(timeSelected == null){
+        times[i].available = !times[i].available;
+        setTimeSelected(times[i].time);
+
+      }else if(times[i].available){
+        times[i].available = !times[i].available;
+        setTimeSelected(null);
+
+      }
+      else{
+        times.map((element, z ) => {
+          times[z].available = false;
+        })
+        times[i].available = true
+        setTimeSelected(times[i].time);
+      }
+
+     
+      
+    
+    }
 
     const monthsLong = {
       January: '01',
@@ -474,11 +497,14 @@ const CalendarTemplate = ({
                               key={time.time.concat(time.date)}
                               className={classes.button}
                               time={time}
-                              handleClick={()=> {time.available = !time.available; setTimeSelected(time.time); }}
+                              handleClick={() =>{
+                                timeButtonClicked(i)}}
                               available={time.available}
                             />
+
                           )
                       )}
+                      
                     </Grid>
                   </Grid>
                   <Grid item>
@@ -497,7 +523,8 @@ const CalendarTemplate = ({
                               key={time.time.concat(time.date)}
                               className={classes.button}
                               time={time}
-                              handleClick={()=> {time.available = !time.available; setTimeSelected(time.time); }}
+                              handleClick= {() =>{
+                                timeButtonClicked(i)}}
                               available={time.available}
                             />
                             
