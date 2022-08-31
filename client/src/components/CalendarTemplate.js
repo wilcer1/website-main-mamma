@@ -12,6 +12,8 @@ import {
   createMuiTheme,
 } from "@material-ui/core";
 import { ArrowLeft, ArrowRight } from "@material-ui/icons";
+import Popup from 'reactjs-popup';
+import '../style/Calendar.css'
 
 const CalendarTemplate = ({
   availability,
@@ -313,6 +315,8 @@ const CalendarTemplate = ({
     .then(response => {
       console.log(response);
     })
+
+    
 }
     
    
@@ -486,18 +490,43 @@ const CalendarTemplate = ({
           <Grid item>
             <Grid container direction="row" alignItems="center" justify="center">
               <Grid item>
-                {saving ? (
-                  <CircularProgress />
-                ) : (
-                  <Button
+              <Popup    trigger={    <Button
                     color="primary"
                     variant="contained"
                     onClick={() => {saveBooking(`${activeDay}_${timeSelected}`);}}
                     className={classes.button}
                   >
                     Boka
-                  </Button>
-                )}
+                  </Button>}    
+              modal    nested  >    
+              {close => (      
+              <div className="popUp">
+              <button className="close" onClick={close}> &times;
+              </button>        
+              <div className="header"> 
+              Tid bokad: 
+               </div>        
+              <div className="content">      {activeDay}<br></br>{timeSelected}         
+              <br />    </div>  
+              <div className="actions">   
+              <Popup  trigger={<button className="popButton"> Trigger </button>}
+                    position="top center"   nested     >   
+                    <span>      </span>   
+              </Popup> 
+               <button   
+               className="popButton"            
+               onClick={() => {              
+                  console.log('modal closed ');
+                close(); }} >  close modal         
+                 </button>        
+                 </div>      
+                 </div>    )}  
+              </Popup>
+                
+              
+             
+                  
+                
               </Grid>
             </Grid>
           </Grid>
