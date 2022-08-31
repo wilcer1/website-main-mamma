@@ -436,7 +436,10 @@ const AdminCalendarTemplate = ({
                   <ArrowRight />
                 </IconButton>
               </Grid>
+
               <Grid item>
+              <h1>Existerande tider</h1>
+
                 <Grid container justify="center" alignItems="center" wrap="wrap">
                   <Grid item>
                     <Grid
