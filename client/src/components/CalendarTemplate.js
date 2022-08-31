@@ -524,7 +524,6 @@ const CalendarTemplate = ({
                     className={classes.button}
                   >
                     Boka
-              <div className="header"> 
                   </Button>   
                   
                   <Popupfunc
