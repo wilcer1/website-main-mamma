@@ -163,6 +163,27 @@ const CalendarTemplate = ({
     );
   }
 
+  function Popupfunc({classname, open, close, activeDay, timeSelected}){
+    if(true){
+    return(
+      <Popup 
+        className={classname}
+        open={open} closeOnDocumentClick onClose={close}>
+        <div className="popUp">
+        <button className="close" onClick={close}>&times;   
+        </button>
+        <div className="header"> Time booked:</div>
+        <div className="content">{activeDay} <br></br> {timeSelected}</div>
+        </div>      
+        </Popup>    
+       
+
+    )}else{
+      return(<h1>Hey</h1>)
+    }
+
+  }
+
   function getDaysArray() {
     return [
       ["", "", "", "", "", "", ""],
@@ -260,6 +281,8 @@ const CalendarTemplate = ({
     const [times, setTimes] = useState([]);
     const [saving, setSaving] = useState(false);
     const [timeSelected, setTimeSelected] = useState(null);
+    const [openPop, setOpenPop] = useState(false);
+    const closeModal = () => setOpenPop(false);
     let week = 0;
     let dayOfMonth = 1;
     while (week < 6 && dayOfMonth <= lastDay) {
@@ -490,38 +513,29 @@ const CalendarTemplate = ({
           <Grid item>
             <Grid container direction="row" alignItems="center" justify="center">
               <Grid item>
-              <Popup    trigger={    <Button
+                  <Button
                     color="primary"
                     variant="contained"
-                    onClick={() => {saveBooking(`${activeDay}_${timeSelected}`);}}
+                    onClick={() => {
+                      setOpenPop(true)
+                      // saveBooking(`${activeDay}_${timeSelected}`);
+
+                  }}
                     className={classes.button}
                   >
                     Boka
-                  </Button>}    
-              modal    nested  >    
-              {close => (      
-              <div className="popUp">
-              <button className="close" onClick={close}> &times;
-              </button>        
               <div className="header"> 
-              Tid bokad: 
-               </div>        
-              <div className="content">      {activeDay}<br></br>{timeSelected}         
-              <br />    </div>  
-              <div className="actions">   
-              <Popup  trigger={<button className="popButton"> Trigger </button>}
-                    position="top center"   nested     >   
-                    <span>      </span>   
-              </Popup> 
-               <button   
-               className="popButton"            
-               onClick={() => {              
-                  console.log('modal closed ');
-                close(); }} >  close modal         
-                 </button>        
-                 </div>      
-                 </div>    )}  
-              </Popup>
+                  </Button>   
+                  
+                  <Popupfunc
+                  classname="popUp"
+                  open={openPop}
+                  close={closeModal}
+                  activeDay={activeDay}
+                  timeSelected={timeSelected}
+                  />
+
+                
                 
               
              
