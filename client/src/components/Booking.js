@@ -15,7 +15,7 @@ function Booking(){
 
     return(
         
-      <div className="Calendar">
+      <div className="CalendarContainer">
         <Calendar/>
       </div>
     )

@@ -157,6 +157,7 @@ const CalendarTemplate = ({
         color={available ? "primary" : "default"}
         className={className}
         variant={available ? "contained" : "outlined"}
+
       >
         {time.time}
       </Button>

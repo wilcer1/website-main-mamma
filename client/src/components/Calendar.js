@@ -8,7 +8,7 @@ function Calendar(){
       setAvailability,
     });
     return (
-      <div>
+      <div className="Calendar">
         <Calendar />
       </div>
     );
