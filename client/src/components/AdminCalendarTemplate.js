@@ -9,24 +9,27 @@ import {
   CircularProgress,
   Popover,
   ThemeProvider,
-  createMuiTheme,
+  createTheme,
 } from "@material-ui/core";
 import { ArrowLeft, ArrowRight } from "@material-ui/icons";
 import Popup from 'reactjs-popup';
 import '../style/Calendar.css'
+import { AiFillPlusCircle, AiFillDelete } from "react-icons/ai";
 
-const CalendarTemplate = ({
-  availability,
-  setAvailability,
+
+
+
+
+
+const AdminCalendarTemplate = ({
   primaryColor = "#DF1B1B",
   secondaryColor = "#47b2a2",
   fontFamily = "Roboto",
   fontSize = 12,
   primaryFontColor = "#222222",
-  startTime = "8:00",
-  endTime = "20:00",
+
 }) => {
-  const theme = createMuiTheme({
+  const theme = createTheme({
     typography: {
       fontFamily: `${fontFamily}`,
       fontSize: fontSize,
@@ -135,7 +138,7 @@ const CalendarTemplate = ({
     },
   });
 
-  
+
   function padTo2Digits(num) {
     return num.toString().padStart(2, '0');
   }
@@ -148,7 +151,7 @@ const CalendarTemplate = ({
     ].join('/');
   }
 
- 
+
 
   function TimeButton({ className, time, available, handleClick }) {
     return (
@@ -163,23 +166,24 @@ const CalendarTemplate = ({
     );
   }
 
-  function Popupfunc({classname, open, close, activeDay, timeSelected}){
-    if(true){
-    return(
-      <Popup 
-        className={classname}
-        open={open} closeOnDocumentClick onClose={close}>
-        <div className="popUp">
-        <button className="close" onClick={close}>&times;   
-        </button>
-        <div className="header"> Time booked:</div>
-        <div className="content">{activeDay} <br></br> {timeSelected}</div>
-        </div>      
-        </Popup>    
-       
+  function Popupfunc({ classname, open, close, activeDay, timeSelected }) {
+    if (true) {
+      return (
+        <Popup
+          className={classname}
+          open={open} closeOnDocumentClick onClose={close}>
+          <div className="popUp">
+            <button className="close" onClick={close}>&times;
+            </button>
+            <div className="header"> Tid Raderad:</div>
+            <div className="content">{activeDay} <br></br>{timeSelected}</div>
+          </div>
+        </Popup>
 
-    )}else{
-      return(<h1>Hey</h1>)
+
+      )
+    } else {
+      return (<h1>Hey</h1>)
     }
 
   }
@@ -195,82 +199,18 @@ const CalendarTemplate = ({
     ];
   }
 
- 
 
-  function fillDayAvailable(date){
-    for(let i = 10; i < 20; i++){
-      fetch("/api/setAvailable", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({datetime: date + `_${i}:00-${i+1}:00`})
-    })
-    .then(res => res.text())
-    .then(response => {
-      console.log(response);
-    })
-}
-    }
-  
 
-  const convertAvailabilityForDatabase = (availability) => {
-    const output = [];
-    for (let year in availability) {
-      for (let month in availability[year]) {
-        for (let day in availability[year][month]) {
-          let activeDay = availability[year][month][day];
-          addActiveDayToOutput(activeDay, output, month, day, year);
-        }
-      }
-    }
-    return output;
-  };
 
-  const combineTimeArrays = (a, b) => {
-    for (let i = 0; i < a.length; i++) {
-      a[i].available = a[i].available || b[i].available;
-    }
-    return a;
-  };
-  function addActiveDayToOutput(activeDay, output, month, day, year) {
-    let activeRangeStart = null;
-    for (let time of activeDay) {
-      if (time.available && !activeRangeStart) activeRangeStart = time.time;
-      else if (!time.available && activeRangeStart) {
-        output.push({
-          start: new Date(`${month} ${day} ${year} ${activeRangeStart}`),
-          end: new Date(`${month} ${day} ${year} ${time.time}`),
-        });
-        activeRangeStart = null;
-      }
-    }
-  }
 
- 
 
-  function makeQuickAvailability(availability) {
-    const output = {};
-    for (let range of availability) {
-      if (new Date(range.start) > new Date()) {
-        let day = moment(range.start).format("MMMM D, YYYY");
-        let time = `${moment(range.start).format("H:mm")} - ${moment(
-          range.end
-        ).format("H:mm")}`;
-        if (output[day]) {
-          output[day].push(time);
-        } else {
-          output[day] = [time];
-        }
-      }
-    }
-    return output;
-  }
+
+
+
   return function Calendar() {
     const classes = useStyles();
     const today = moment();
-    
+
     const [activeDay, setActiveDay] = useState(formatDate(today._d));
     const [year, setYear] = useState(Number(today.format("YYYY")));
     const [monthNumber, setMonthNumber] = useState(Number(today.format("M")));
@@ -283,6 +223,42 @@ const CalendarTemplate = ({
     const [timeSelected, setTimeSelected] = useState(null);
     const [openPop, setOpenPop] = useState(false);
     const closeModal = () => setOpenPop(false);
+    const optionsdleft = [
+      "05:00",
+      "06:00",
+      "07:00",
+      "08:00",
+      "10:00",
+      "11:00",
+      "12:00",
+      "13:00",
+      "14:00",
+      "15:00",
+      "16:00",
+      "17:00",
+      "18:00",
+      "19:00",
+      "20:00",
+    ];
+    const optionsdright = [
+      "06:00",
+      "07:00",
+      "08:00",
+      "10:00",
+      "11:00",
+      "12:00",
+      "13:00",
+      "14:00",
+      "15:00",
+      "16:00",
+      "17:00",
+      "18:00",
+      "19:00",
+      "20:00",
+      "21:00"
+    ];
+    const defaultOptionLeft = optionsdleft[0];
+    const defaultOptionRight = optionsdright[0];
     let week = 0;
     let dayOfMonth = 1;
     while (week < 6 && dayOfMonth <= lastDay) {
@@ -296,18 +272,16 @@ const CalendarTemplate = ({
     }
     
     useEffect(() => {
-      
+
       fetch(`/api/availableForDate?date=${activeDay}`)
         .then(res => res.json())
         .then(response => {
-          response.map((element) => {
-            element.available = false
-          })
+
           setTimes(response);
-  
+
         });
-  
-  
+
+
     }, [activeDay])
 
     const createArrowHandler = (delta) => () => {
@@ -326,24 +300,24 @@ const CalendarTemplate = ({
     };
 
     function saveBooking(datetime) {
-     
+
       fetch("/api/book", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            'Accept': 'application/json'
+          "Content-Type": "application/json",
+          'Accept': 'application/json'
         },
-        body: JSON.stringify({datetime: datetime})
-    })
-    .then(res => res.text())
-    .then(response => {
-      console.log(response);
-    })
+        body: JSON.stringify({ datetime: datetime })
+      })
+        .then(res => res.text())
+        .then(response => {
+          console.log(response);
+        })
 
-    
-}
-    
-   
+
+    }
+
+
     const handleJumpToCurrent = () => {
       setYear(Number(today.format("YYYY")));
       setMonthNumber(Number(today.format("M")));
@@ -352,24 +326,25 @@ const CalendarTemplate = ({
     };
     const [anchorEl, setAnchorEl] = useState(null);
     const [popoverContent, setPopoverContent] = useState(null);
-    
+
     const handleClosePopover = () => {
       setAnchorEl(null);
       setPopoverContent(null);
     };
 
-    function timeButtonClicked(i){
-      if(timeSelected == null){
+
+    function timeButtonClicked(i) {
+      if (timeSelected == null) {
         times[i].available = !times[i].available;
         setTimeSelected(times[i].time);
 
-      }else if(times[i].available){
+      } else if (times[i].available) {
         times[i].available = !times[i].available;
         setTimeSelected(null);
 
       }
-      else{
-        times.map((element, z ) => {
+      else {
+        times.map((element, z) => {
           times[z].available = false;
         })
         times[i].available = true
@@ -425,15 +400,15 @@ const CalendarTemplate = ({
                             <Grid key={year + month + i} item>
                               <IconButton
                                 onClick={() => {
-                                  setActiveDay(day + "/" + monthsLong[month] + "/" + year);
-                                  setTimeSelected(null)
-
-                              }}
+                                   setActiveDay(day + "/" + monthsLong[month] + "/" + year) 
+                                   setTimeSelected(null) 
+                                  
+                                  }}
                                 color={
                                   activeDay === day + "/" + monthsLong[month] + "/" + year
                                     ? "primary"
                                     : "secondary"
-                                
+
                                 }
                                 disabled={
                                   !day ||
@@ -442,7 +417,7 @@ const CalendarTemplate = ({
                                     day < Number(today.format("D")))
                                 }
                                 size="medium"
-                              
+
                                 onMouseLeave={handleClosePopover}
                               >
                                 <p className={classes.calendarText}>{day}</p>
@@ -482,7 +457,10 @@ const CalendarTemplate = ({
                   <ArrowRight />
                 </IconButton>
               </Grid>
+
               <Grid item>
+                <h1>Existerande tider</h1>
+
                 <Grid container justify="center" alignItems="center" wrap="wrap">
                   <Grid item>
                     <Grid
@@ -498,14 +476,12 @@ const CalendarTemplate = ({
                               key={time.time.concat(time.date)}
                               className={classes.button}
                               time={time}
-                              handleClick={() =>{
-                                timeButtonClicked(i)}}
+                              handleClick={() => { timeButtonClicked(i) }}
                               available={time.available}
                             />
-
                           )
                       )}
-                      
+
                     </Grid>
                   </Grid>
                   <Grid item>
@@ -518,20 +494,20 @@ const CalendarTemplate = ({
                       {times.map(
                         (time, i) =>
                           i < times.length &&
-                          i >  Math.ceil(times.length / 2) - 1 && (   
-                            
+                          i > Math.ceil(times.length / 2) - 1 && (
+
                             <TimeButton
                               key={time.time.concat(time.date)}
                               className={classes.button}
                               time={time}
-                              handleClick= {() =>{
-                                timeButtonClicked(i)}}
+                              handleClick={() => { timeButtonClicked(i) }}
                               available={time.available}
                             />
-                            
+
                           )
-                          
+
                       )}
+
                     </Grid>
                   </Grid>
                 </Grid>
@@ -541,33 +517,68 @@ const CalendarTemplate = ({
           <Grid item>
             <Grid container direction="row" alignItems="center" justify="center">
               <Grid item>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    onClick={() => {
-                      setOpenPop(true)
-                      // saveBooking(`${activeDay}_${timeSelected}`);
+                <Button 
+                  startIcon={<AiFillDelete></AiFillDelete>}
+                  color="primary"
+                  variant="contained"
+                  onClick={() => {
+                    setOpenPop(true)
+                    // saveBooking(`${activeDay}_${timeSelected}`);
 
                   }}
-                    className={classes.button}
-                  >
-                    Boka
-                  </Button>   
-                  
-                  <Popupfunc
+                  disabled={timeSelected === null}
+                  className={classes.button}
+                >
+                  Ta bort tid
+                </Button>
+
+                <Popupfunc
                   classname="popUp"
                   open={openPop}
                   close={closeModal}
                   activeDay={activeDay}
                   timeSelected={timeSelected}
-                  />
+                />
 
-                
-                
+                <Popup trigger={  
+                  <Button
+                  startIcon={<AiFillPlusCircle></AiFillPlusCircle>}
+                  color="primary"
+                  variant="contained"
+                  onClick={() => {
+
+                    // saveBooking(`${activeDay}_${timeSelected}`);
+
+                  }}
+                  disabled = {activeDay === null}
+                  className={classes.button}
+                >
+                  Lägg till tid 
+                </Button>}
+                  modal nested  >
+                  {close => (
+                    <div className="popUp">
+                      <button className="close" onClick={close}>&times;
+                      </button>
+                      <div className="header"> Modal Title </div>
+                      <div className="content">
+                      Dag vald: {activeDay}
+                    
               
-             
-                  
-                
+                      </div>
+                      <div className="actions">
+                        <button>Lägg till tid</button>
+                        <button className="button" onClick={() => { console.log('modal closed '); close(); }}
+                        >Stäng</button>
+                      </div>
+                    </div>)}
+                </Popup>
+              
+
+
+
+
+
               </Grid>
             </Grid>
           </Grid>
@@ -575,12 +586,14 @@ const CalendarTemplate = ({
       </ThemeProvider>
     );
 
-    
 
-    
 
-    
+
+
+
   };
 };
 
-export default CalendarTemplate;
+
+
+export default AdminCalendarTemplate;
