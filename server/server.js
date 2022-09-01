@@ -21,4 +21,4 @@ mongoose.connect(
 app.use(express.json());
 app.use("/api", api);
 
-app.listen(5000, () => {console.log("server running on 5000")});  
+app.listen(5000,'192.168.1.222' || 'localhost', () => {console.log("server running on 5000")});  

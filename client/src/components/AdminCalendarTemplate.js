@@ -139,6 +139,53 @@ const AdminCalendarTemplate = ({
   });
 
 
+  const monthsSV =  (month) => {
+    switch(month){
+      case "January":
+        return "Januari";
+
+      case "February":
+        return "Februari";
+
+      case "March":
+        return "Mars";
+
+      case "April":
+        return "April";
+
+      case "May":
+        return "Maj";
+
+      case "June":
+        return "Juni";
+
+      case "July":
+        return "Juli";
+  
+      case "August":
+        return "Augusti";
+  
+      case "September":
+        return "September";
+        
+      case "October":
+        return "Oktober";
+
+      case "November":
+         return "November";
+  
+      case "December":
+        return "December";
+
+      default:
+        return month;
+    }
+    
+
+
+  }
+  
+
   function padTo2Digits(num) {
     return num.toString().padStart(2, '0');
   }
@@ -391,7 +438,7 @@ const AdminCalendarTemplate = ({
                 <Card style={{ padding: 10, margin: 10 }} variant="outlined">
                   <Grid container direction="column" alignItems="center">
                     <h3>
-                      {month} {year}
+                      {monthsSV(month)} {year}
                     </h3>
                     {days.map((week, i) => (
                       <Grid key={i} item>
