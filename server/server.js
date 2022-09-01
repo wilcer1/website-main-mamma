@@ -2,10 +2,18 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const dotenv = require('dotenv');
+const https = require('https');
+const fs = require('fs');
+const PORT = 5000;
 
 const api = require("./api");
 
 dotenv.config();
+
+const credentials  = {
+    key: fs.readFileSync(process.env.key),
+    cert: fs.readFileSync(process.env.cert),
+  };
 
 
 mongoose.connect(
@@ -17,8 +25,36 @@ mongoose.connect(
 .catch((err) => {
     console.error(err);
 });
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'https://localhost:3000');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', false);
+
+    // Pass to next layer of middleware
+    next();
+});
 
 app.use(express.json());
 app.use("/api", api);
 
-app.listen(5000, () => {console.log("server running on 5000")});  
+
+https
+  .createServer(credentials, app)
+    .listen(PORT, function () {
+    console.log("running" + PORT);
+  })
+  
+
+app.get('/', (req,res)=>{
+    res.send("Hello from express server.")
+})

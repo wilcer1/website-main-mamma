@@ -42,7 +42,7 @@ router.get("/availableForDate", async (req, res)=> {
     available = await Booking.find({"datetime": RegExp(req.query.date), booked: false})
     console.log(available);
     res.json(formatDateTime(available))
- 
+    
 });
 
 router.post("/setAvailable", async (req, res) => {
