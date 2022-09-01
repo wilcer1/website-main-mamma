@@ -135,7 +135,7 @@ const CalendarTemplate = ({
     },
   });
 
-  
+
   function padTo2Digits(num) {
     return num.toString().padStart(2, '0');
   }
@@ -148,7 +148,7 @@ const CalendarTemplate = ({
     ].join('/');
   }
 
- 
+
 
   function TimeButton({ className, time, available, handleClick }) {
     return (
@@ -163,23 +163,24 @@ const CalendarTemplate = ({
     );
   }
 
-  function Popupfunc({classname, open, close, activeDay, timeSelected}){
-    if(true){
-    return(
-      <Popup 
-        className={classname}
-        open={open} closeOnDocumentClick onClose={close}>
-        <div className="popUp">
-        <button className="close" onClick={close}>&times;   
-        </button>
-        <div className="header"> Time booked:</div>
-        <div className="content">{activeDay} <br></br> {timeSelected}</div>
-        </div>      
-        </Popup>    
-       
+  function Popupfunc({ classname, open, close, activeDay, timeSelected }) {
+    if (true) {
+      return (
+        <Popup
+          className={classname}
+          open={open} closeOnDocumentClick onClose={close}>
+          <div className="popUp">
+            <button className="close" onClick={close}>&times;
+            </button>
+            <div className="header"> Time booked:</div>
+            <div className="content">{activeDay} <br></br> {timeSelected}</div>
+          </div>
+        </Popup>
 
-    )}else{
-      return(<h1>Hey</h1>)
+
+      )
+    } else {
+      return (<h1>Hey</h1>)
     }
 
   }
@@ -195,25 +196,25 @@ const CalendarTemplate = ({
     ];
   }
 
- 
 
-  function fillDayAvailable(date){
-    for(let i = 10; i < 20; i++){
+
+  function fillDayAvailable(date) {
+    for (let i = 10; i < 20; i++) {
       fetch("/api/setAvailable", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            'Accept': 'application/json'
+          "Content-Type": "application/json",
+          'Accept': 'application/json'
         },
-        body: JSON.stringify({datetime: date + `_${i}:00-${i+1}:00`})
-    })
-    .then(res => res.text())
-    .then(response => {
-      console.log(response);
-    })
-}
+        body: JSON.stringify({ datetime: date + `_${i}:00-${i + 1}:00` })
+      })
+        .then(res => res.text())
+        .then(response => {
+          console.log(response);
+        })
     }
-  
+  }
+
 
   const convertAvailabilityForDatabase = (availability) => {
     const output = [];
@@ -248,7 +249,7 @@ const CalendarTemplate = ({
     }
   }
 
- 
+
 
   function makeQuickAvailability(availability) {
     const output = {};
@@ -270,7 +271,7 @@ const CalendarTemplate = ({
   return function Calendar() {
     const classes = useStyles();
     const today = moment();
-    
+
     const [activeDay, setActiveDay] = useState(formatDate(today._d));
     const [year, setYear] = useState(Number(today.format("YYYY")));
     const [monthNumber, setMonthNumber] = useState(Number(today.format("M")));
@@ -294,9 +295,9 @@ const CalendarTemplate = ({
         dayOfWeek = 0;
       }
     }
-    
+
     useEffect(() => {
-      
+
       fetch(`/api/availableForDate?date=${activeDay}`)
         .then(res => res.json())
         .then(response => {
@@ -304,10 +305,10 @@ const CalendarTemplate = ({
             element.available = false
           })
           setTimes(response);
-  
+
         });
-  
-  
+
+
     }, [activeDay])
 
     const createArrowHandler = (delta) => () => {
@@ -326,70 +327,79 @@ const CalendarTemplate = ({
     };
 
     function saveBooking(datetime) {
-     
+
       fetch("/api/book", {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            'Accept': 'application/json'
+          "Content-Type": "application/json",
+          'Accept': 'application/json'
         },
-        body: JSON.stringify({datetime: datetime})
-    })
-    .then(res => res.text())
-    .then(response => {
-      console.log(response);
-    })
-
-    
-}
-
-const monthsSV =  (month) => {
-  switch(month){
-    case "January":
-      return "Januari";
-
-    case "February":
-      return "Februari";
-
-    case "March":
-      return "Mars";
-
-    case "April":
-      return "April";
-
-    case "May":
-      return "Maj";
-
-    case "June":
-      return "Juni";
-
-    case "July":
-      return "Juli";
-
-    case "August":
-      return "Augusti";
-
-    case "September":
-      return "September";
-      
-    case "October":
-      return "Oktober";
-
-    case "November":
-       return "November";
-
-    case "December":
-      return "December";
-
-    default:
-      return month;
-  }
-  
+        body: JSON.stringify({ datetime: datetime })
+      })
+        .then(res => res.text())
+        .then(response => {
+          console.log(response);
+        })
 
 
-}
-    
-   
+    }
+
+    const monthsSV = (month) => {
+      switch (month) {
+        case "January":
+          return "Januari";
+
+        case "February":
+          return "Februari";
+
+        case "March":
+          return "Mars";
+
+        case "April":
+          return "April";
+
+        case "May":
+          return "Maj";
+
+        case "June":
+          return "Juni";
+
+        case "July":
+          return "Juli";
+
+        case "August":
+          return "Augusti";
+
+        case "September":
+          return "September";
+
+        case "October":
+          return "Oktober";
+
+        case "November":
+          return "November";
+
+        case "December":
+          return "December";
+
+        default:
+          return month;
+      }
+
+    }
+    const getDay = [
+      "Sön",
+      "Mån",
+      "Tis",
+      "Ons",
+      "Tors",
+      "Fre",
+      "Lör",
+    ]
+
+
+
+
     const handleJumpToCurrent = () => {
       setYear(Number(today.format("YYYY")));
       setMonthNumber(Number(today.format("M")));
@@ -398,24 +408,24 @@ const monthsSV =  (month) => {
     };
     const [anchorEl, setAnchorEl] = useState(null);
     const [popoverContent, setPopoverContent] = useState(null);
-    
+
     const handleClosePopover = () => {
       setAnchorEl(null);
       setPopoverContent(null);
     };
 
-    function timeButtonClicked(i){
-      if(timeSelected == null){
+    function timeButtonClicked(i) {
+      if (timeSelected == null) {
         times[i].available = !times[i].available;
         setTimeSelected(times[i].time);
 
-      }else if(times[i].available){
+      } else if (times[i].available) {
         times[i].available = !times[i].available;
         setTimeSelected(null);
 
       }
-      else{
-        times.map((element, z ) => {
+      else {
+        times.map((element, z) => {
           times[z].available = false;
         })
         times[i].available = true
@@ -464,22 +474,52 @@ const monthsSV =  (month) => {
                     <h3>
                       {monthsSV(month)} {year}
                     </h3>
+
+
+                    <Grid key="weekdays" item >
+                    <Grid container direction="row" >
+                    
+                     
+                        {getDay.map((day, i) => (
+
+                          <Grid key={day} item>
+                            <IconButton
+                              color="primary"
+                              disabled={true}
+                              size="medium"
+
+                            >
+                               <p className={classes.calendarText}>{day}</p>
+                            </IconButton>
+                          </Grid>
+
+                        ))}
+                      </Grid>
+                    </Grid>
+
                     {days.map((week, i) => (
-                      <Grid key={i} item>
+
+
+
+                      <Grid key={i} item >
+
+
                         <Grid container direction="row">
+
                           {week.map((day, i) => (
                             <Grid key={year + month + i} item>
+
                               <IconButton
                                 onClick={() => {
                                   setActiveDay(day + "/" + monthsLong[month] + "/" + year);
                                   setTimeSelected(null)
 
-                              }}
+                                }}
                                 color={
                                   activeDay === day + "/" + monthsLong[month] + "/" + year
                                     ? "primary"
                                     : "secondary"
-                                
+
                                 }
                                 disabled={
                                   !day ||
@@ -488,7 +528,7 @@ const monthsSV =  (month) => {
                                     day < Number(today.format("D")))
                                 }
                                 size="medium"
-                              
+
                                 onMouseLeave={handleClosePopover}
                               >
                                 <p className={classes.calendarText}>{day}</p>
@@ -544,14 +584,15 @@ const monthsSV =  (month) => {
                               key={time.time.concat(time.date)}
                               className={classes.button}
                               time={time}
-                              handleClick={() =>{
-                                timeButtonClicked(i)}}
+                              handleClick={() => {
+                                timeButtonClicked(i)
+                              }}
                               available={time.available}
                             />
 
                           )
                       )}
-                      
+
                     </Grid>
                   </Grid>
                   <Grid item>
@@ -564,19 +605,20 @@ const monthsSV =  (month) => {
                       {times.map(
                         (time, i) =>
                           i < times.length &&
-                          i >  Math.ceil(times.length / 2) - 1 && (   
-                            
+                          i > Math.ceil(times.length / 2) - 1 && (
+
                             <TimeButton
                               key={time.time.concat(time.date)}
                               className={classes.button}
                               time={time}
-                              handleClick= {() =>{
-                                timeButtonClicked(i)}}
+                              handleClick={() => {
+                                timeButtonClicked(i)
+                              }}
                               available={time.available}
                             />
-                            
+
                           )
-                          
+
                       )}
                     </Grid>
                   </Grid>
@@ -587,33 +629,33 @@ const monthsSV =  (month) => {
           <Grid item>
             <Grid container direction="row" alignItems="center" justify="center">
               <Grid item>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    onClick={() => {
-                      setOpenPop(true)
-                      // saveBooking(`${activeDay}_${timeSelected}`);
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={() => {
+                    setOpenPop(true)
+                    // saveBooking(`${activeDay}_${timeSelected}`);
 
                   }}
-                    className={classes.button}
-                  >
-                    Boka
-                  </Button>   
-                  
-                  <Popupfunc
+                  className={classes.button}
+                >
+                  Boka
+                </Button>
+
+                <Popupfunc
                   classname="popUp"
                   open={openPop}
                   close={closeModal}
                   activeDay={activeDay}
                   timeSelected={timeSelected}
-                  />
+                />
 
-                
-                
-              
-             
-                  
-                
+
+
+
+
+
+
               </Grid>
             </Grid>
           </Grid>
@@ -621,11 +663,11 @@ const monthsSV =  (month) => {
       </ThemeProvider>
     );
 
-    
 
-    
 
-    
+
+
+
   };
 };
 
