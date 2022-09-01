@@ -477,7 +477,7 @@ const CalendarTemplate = ({
 
 
                     <Grid key="weekdays" item >
-                    <Grid container direction="row" >
+                    <Grid container direction="row">
                     
                      
                         {getDay.map((day, i) => (
@@ -487,9 +487,10 @@ const CalendarTemplate = ({
                               color="primary"
                               disabled={true}
                               size="medium"
+                              
 
                             >
-                               <p className={classes.calendarText}>{day}</p>
+                               <p className={classes.calendarText} style={{textAlign: "left", fontSize: 13} }>{day}</p>
                             </IconButton>
                           </Grid>
 
