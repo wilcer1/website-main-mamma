@@ -318,6 +318,7 @@ const AdminCalendarTemplate = ({
       }
     }
     
+    
     useEffect(() => {
 
       fetch(`https://localhost:5000/api/availableForDate?date=${activeDay}`)
@@ -447,12 +448,12 @@ const AdminCalendarTemplate = ({
                             <Grid key={year + month + i} item>
                               <IconButton
                                 onClick={() => {
-                                   setActiveDay(day + "/" + monthsLong[month] + "/" + year) 
+                                   setActiveDay("0" + day + "/" + monthsLong[month] + "/" + year) 
                                    setTimeSelected(null) 
                                   
                                   }}
                                 color={
-                                  activeDay === day + "/" + monthsLong[month] + "/" + year
+                                  activeDay === "0" + day + "/" + monthsLong[month] + "/" + year
                                     ? "primary"
                                     : "secondary"
 
