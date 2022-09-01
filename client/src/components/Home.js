@@ -66,13 +66,12 @@ function Home(){
   
   return (
     <>
-    <div className="main-container">
-      {/* <img src={beach} className="hej" ></img> */}
-    </div>
     <div className="box" ref={boxRef}>
       <h1 className="home">
         <span>There are no limits to what you can accomplish, except the limits you place on your own thinking.</span>
-        </h1></div>
+        <a href="/boka"><button className="HomeBooking">Boka</button></a>
+      </h1>
+    </div>
     <div className="placeholder">
       <div className="revealUp">Testing</div>
     </div>
