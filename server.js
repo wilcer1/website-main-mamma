@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const dotenv = require('dotenv');
 const https = require('https');
 const fs = require('fs');
+const path = require("path");
 const PORT = 5000;
 
 const api = require("/routes/api");
@@ -44,9 +45,14 @@ app.use(function (req, res, next) {
     next();
 });
 
+
+
 app.use(express.json());
 app.use("/api", api);
 
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 https
   .createServer(credentials, app)
@@ -55,6 +61,3 @@ https
   })
   
 
-app.get('/', (req,res)=>{
-    res.send("Hello from express server.")
-})
