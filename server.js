@@ -6,7 +6,7 @@ const https = require('https');
 const fs = require('fs');
 const PORT = 5000;
 
-const api = require("./api");
+const api = require("/routes/api");
 
 dotenv.config();
 

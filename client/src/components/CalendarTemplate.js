@@ -515,12 +515,12 @@ const CalendarTemplate = ({
 
                               <IconButton
                                 onClick={() => {
-                                  setActiveDay(day + "/" + monthsLong[month] + "/" + year);
+                                  setActiveDay("0" + day + "/" + monthsLong[month] + "/" + year);
                                   setTimeSelected(null)
 
                                 }}
                                 color={
-                                  activeDay === day + "/" + monthsLong[month] + "/" + year
+                                  activeDay === "0" + day + "/" + monthsLong[month] + "/" + year
                                     ? "primary"
                                     : "secondary"
 
