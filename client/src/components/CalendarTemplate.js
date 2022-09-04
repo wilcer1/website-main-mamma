@@ -299,10 +299,11 @@ const CalendarTemplate = ({
 
     useEffect(() => {
 
-      fetch(`https://localhost:5000/api/availableForDate?date=${activeDay}`)
+      fetch(`https://data.mongodb-api.com/app/website-mamma-fvnxm/endpoint/getAvailableForDate?date=${activeDay}`)
         .then(res => res.json())
         .then(response => {
           console.log(response);
+          response = formatDateTime(response);
           response.map((element) => {
             element.available = false
           })
@@ -313,6 +314,20 @@ const CalendarTemplate = ({
 
 
     }, [activeDay])
+
+
+    function formatDateTime(json){
+      const datetimeformatted = []
+      json.map((element) => {
+          var temp = element.datetime.split("_");
+          datetimeformatted.push({
+            date: temp[0],
+            time: temp[1]
+          });
+  
+        });
+        return datetimeformatted
+  }
 
     const createArrowHandler = (delta) => () => {
       let newMonth = monthNumber + delta;

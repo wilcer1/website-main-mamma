@@ -321,7 +321,7 @@ const AdminCalendarTemplate = ({
     
     useEffect(() => {
 
-      fetch(`https://localhost:5000/api/availableForDate?date=${activeDay}`)
+      fetch(`https://data.mongodb-api.com/app/website-mamma-fvnxm/endpoint/getAvailableForDate?date=${activeDay}`)
         .then(res => res.json())
         .then(response => {
 
