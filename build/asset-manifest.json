@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/wilcer1.github.io/static/css/main.3161ab60.css",
+    "main.js": "/wilcer1.github.io/static/js/main.0b608271.js",
+    "static/js/787.c4e7f8f9.chunk.js": "/wilcer1.github.io/static/js/787.c4e7f8f9.chunk.js",
+    "static/media/Instagram-Icon.png": "/wilcer1.github.io/static/media/Instagram-Icon.3d6c8f9c6e4bb23ce95e.png",
+    "static/media/beach.png": "/wilcer1.github.io/static/media/beach.d185d78636b970122f33.png",
+    "index.html": "/wilcer1.github.io/index.html",
+    "main.3161ab60.css.map": "/wilcer1.github.io/static/css/main.3161ab60.css.map",
+    "main.0b608271.js.map": "/wilcer1.github.io/static/js/main.0b608271.js.map",
+    "787.c4e7f8f9.chunk.js.map": "/wilcer1.github.io/static/js/787.c4e7f8f9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3161ab60.css",
+    "static/js/main.0b608271.js"
+  ]
+}
