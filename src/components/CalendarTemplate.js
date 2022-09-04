@@ -299,7 +299,7 @@ const CalendarTemplate = ({
 
     useEffect(() => {
 
-      fetch(`https://localhost:5000/api/availableForDate?date=${activeDay}`)
+      fetch(`/api/availableForDate?date=${activeDay}`)
         .then(res => res.json())
         .then(response => {
           console.log(response);
