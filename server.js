@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 const https = require('https');
 const fs = require('fs');
 const path = require("path");
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 const api = require("./routes/api");
 
