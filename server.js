@@ -12,8 +12,8 @@ const api = require("./routes/api");
 dotenv.config();
 
 const credentials  = {
-    key: fs.readFileSync(process.env.key),
-    cert: fs.readFileSync(process.env.cert),
+    key: fs.readFileSync("./localhost-key.pem"),
+    cert: fs.readFileSync("./localhost.pem"),
   };
 
 
