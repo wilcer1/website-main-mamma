@@ -18,7 +18,7 @@ const credentials  = {
 
 
 mongoose.connect(
-    process.env.DB_CONNECT,{
+    process.env.DB_CONNECTION,{
         useUnifiedTopology: true, useNewUrlParser: true 
     }
 )
