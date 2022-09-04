@@ -10,7 +10,7 @@ function App() {
   return (
     <>
     <Navbar/>
-    <HashRouter >
+    <HashRouter basename="https://wilcer1.github.io/">
       
       <Route exact path='/' element={< Home />}/>
       <Route exact path='/boka' element={< Booking />}/>
