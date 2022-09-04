@@ -7,7 +7,7 @@ const fs = require('fs');
 const path = require("path");
 const PORT = 5000;
 
-const api = require("/routes/api");
+const api = require("./api");
 
 dotenv.config();
 

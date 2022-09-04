@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const Booking = require("../Model/bookingschema");
+const Booking = require("./Model/bookingschema");
 
 function formatDateTime(json){
     datetimeformatted = []
