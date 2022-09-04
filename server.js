@@ -46,12 +46,15 @@ app.use(function (req, res, next) {
 });
 
 
-
 app.use(express.json());
+app.use(express.static(path.join(__dirname, "build")));
+
+
+
 app.use("/api", api);
 
 app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 https
