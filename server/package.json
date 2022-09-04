@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "homepage": "https://wilcer1.github.io/wilcer1.github.io",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server",
@@ -17,5 +18,8 @@
     "mongoose": "^6.5.2",
     "nodemon": "^2.0.19",
     "path": "^0.12.7"
+  },
+  "devDependencies": {
+    
   }
 }
