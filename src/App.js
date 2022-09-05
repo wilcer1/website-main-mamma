@@ -4,10 +4,11 @@ import Home from "./components/Home"
 import Navbar from "./components/Navbar"
 import Booking from "./components/Booking";
 
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Admin from "./components/Admin";
 function App() {
   return (
+    <BrowserRouter basename="wilcer1.github.io">
     <>
     <Navbar/>
     <Routes>
@@ -18,6 +19,7 @@ function App() {
       
       </Routes>
     </>
+    </BrowserRouter>
   )
 }
 
