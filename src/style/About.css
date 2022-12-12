@@ -1,0 +1,32 @@
+.AboutContainer {
+    background: url(https://img.freepik.com/free-photo/greenery-product-background_53876-90824.jpg?w=1380&t=st=1670841234~exp=1670841834~hmac=bb65fbe89d99dc7c3baed9e7b90c23bde3274135707a4c29f7aa1358073dc739) no-repeat center fixed;
+    background-size: cover;
+    align-items: center;
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    height: 100%; 
+    width: 100%;
+}
+
+
+.Text {
+    margin-top: 5%;
+    margin-left: 1%;
+    margin-right: 30%;
+
+
+}
+.body{
+    font-family: "Papyrus", "arial";
+
+}
+b{
+    font-family: "Comic Sans MS", "Comic Sans", "cursive";
+}
+.video {
+    margin-left: 95%;
+    margin-right: 5%;
+    
+}
+

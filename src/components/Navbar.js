@@ -21,7 +21,7 @@ function Navbar(){
                 <input type="checkbox" id="checkbox"></input>
                     <nav>
                         <ul>
-                            <li><a href="/"><h1>Företag namn här</h1></a></li>
+                            <li><a href="/"><h1>Holistik Läkning</h1></a></li>
                             <li className="endpoints"><a href="/Boka">Boka Tid</a></li>
                             <li className="endpoints"><a href="/Om">Om</a></li>
                             <li className="socialmedia"> <a href="https://www.instagram.com/holistisklakning/"><img src={instagram} alt="instagram" width={30} height={30}></img></a></li>
