@@ -73,7 +73,7 @@ function Home(){
       </h1>
     </div>
     <div className="placeholder">
-      <div className="revealUp">Testing</div>
+      <div className="revealUp">TEST123</div>
     </div>
     <div className="placeholder2">
       <div className="revealUp">Glazers Out</div>
