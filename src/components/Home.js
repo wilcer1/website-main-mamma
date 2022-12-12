@@ -76,7 +76,7 @@ function Home(){
       <div className="revealUp">TEST123</div>
     </div>
     <div className="placeholder2">
-      <div className="revealUp">Glazers Out</div>
+      <div className="revealUp">HEY</div>
     </div>
     
     </>
