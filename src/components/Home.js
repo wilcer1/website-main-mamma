@@ -68,7 +68,7 @@ function Home(){
     <>
     <div className="box" ref={boxRef}>
       <h1 className="home">
-        <span>There are no limits to what you can accomplish, except the limits you place on your own thinking.</span>
+        <span>test12345 There are no limits to what you can accomplish, except the limits you place on your own thinking.</span>
         <a href="/boka"><button className="HomeBooking">Boka</button></a>
       </h1>
     </div>
